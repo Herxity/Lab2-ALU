@@ -48,11 +48,9 @@ begin
     process(OPCODE) 
     begin
     case comp is 
-        when "1" => comp_out <="0001";
-        when "0" => comp_out <="0000";
+        when '1' => comp_out <="0001";
+        when '0' => comp_out <="0000";
     end case; 
-    shift_right_arithmetic_A <=A;
-    shift_right(unsigned(A),1);
     case OPCODE is 
         when "0001" => RES <= A+B;
         when "0010" => RES <= A-B;
@@ -62,7 +60,7 @@ begin
         when "0110" => RES <= comp_out;
         when "0111" => RES <= A(3 downto 1) & '0'; --6
         when "1000" => RES <= '0' & A(2 downto 1); -- 7
-        when "1001" => RES <= shift_right_arithmetic_A; -- 8
+        when "1001" => RES <= std_logic_vector(shift_right(unsigned(A),1)); -- 8
         when "1010" => RES <= not A;
         when "1011" => RES <= A or B;
         when "1100" => RES <= A xor B;
