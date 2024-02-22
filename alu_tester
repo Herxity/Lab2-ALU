@@ -1,0 +1,72 @@
+----------------------------------------------------------------------------------
+-- Company: 
+-- Engineer: 
+-- 
+-- Create Date: 02/22/2024 06:20:12 PM
+-- Design Name: 
+-- Module Name: alu_tester - Behavioral
+-- Project Name: 
+-- Target Devices: 
+-- Tool Versions: 
+-- Description: 
+-- 
+-- Dependencies: 
+-- 
+-- Revision:
+-- Revision 0.01 - File Created
+-- Additional Comments:
+-- 
+----------------------------------------------------------------------------------
+
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+use IEEE.NUMERIC_STD.ALL;
+
+-- Uncomment the following library declaration if instantiating
+-- any Xilinx leaf cells in this code.
+--library UNISIM;
+--use UNISIM.VComponents.all;
+
+entity alu_tester is
+  Port (clk : in std_logic;
+        sw : in std_logic_vector(3 downto 0);
+        btn : in std_logic_vector(2 downto 0);
+        led: out std_logic_vector(3 downto 0));
+end alu_tester;
+
+architecture Behavioral of alu_tester is
+    component my_alu
+    Port ( A, B, OPCODE : in std_logic_vector(3 downto 0);
+         RES : out std_logic_vector(3 downto 0);
+         clk: std_logic);
+    end component my_alu;
+
+    signal A,B,OPCODE : std_logic_vector(3 downto 0);
+begin
+    
+    alu: my_alu
+        port map(
+            clk=>clk,
+            A=>A,
+            B =>B,
+            OPCODE=>OPCODE);
+            
+    loader: process(clk)
+    begin
+        if rising_edge(clk) then
+            case btn is
+                when "001" => B <= sw;
+                when "010" => A <= sw;
+                when "100" => OPCODE <=sw;
+                when "111" => OPCODE <=(others=>'0'); A <=(others=>'0'); B <=(others=>'0');
+                when others =>
+            end case;
+        end if;
+    end process loader;
+    
+
+end Behavioral;
