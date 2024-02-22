@@ -34,8 +34,9 @@ use ieee.std_logic_unsigned.all;
 --use UNISIM.VComponents.all;
 
 entity my_alu is
-  Port ( A, B, OPCODE : in std_logic_vector(3 downto 0);
-         RES : out std_logic_vector(3 downto 0));
+    Port ( A, B, OPCODE : in std_logic_vector(3 downto 0);
+         RES : out std_logic_vector(3 downto 0);
+         clk: std_logic);
 end my_alu;
 
 architecture Behavioral of my_alu is
@@ -44,29 +45,34 @@ architecture Behavioral of my_alu is
     signal shift_right_arithmetic_A :std_logic_vector(3 downto 0);
 begin
     comp <= '1' when (A > B) else '0';
-    
-    process(OPCODE) 
+
+    process(clk)
+
+
     begin
-    case comp is 
-        when '1' => comp_out <="0001";
-        when '0' => comp_out <="0000";
-    end case; 
-    case OPCODE is 
-        when "0001" => RES <= A+B;
-        when "0010" => RES <= A-B;
-        when "0011" => RES <= A+1;
-        when "0100" => RES <= A-1;
-        when "0101" => RES <= 0-A;
-        when "0110" => RES <= comp_out;
-        when "0111" => RES <= A(3 downto 1) & '0'; --6
-        when "1000" => RES <= '0' & A(2 downto 1); -- 7
-        when "1001" => RES <= std_logic_vector(shift_right(unsigned(A),1)); -- 8
-        when "1010" => RES <= not A;
-        when "1011" => RES <= A or B;
-        when "1100" => RES <= A xor B;
-        when "1101" => RES <= A xnor B;
-        when "1110" => RES <= A nand B;
-        when "1111" => RES <= A nor B;
-    end case;
+        if rising_edge(clk) then
+            case comp is
+                when '1' => comp_out <="0001";
+                when '0' => comp_out <="0000";
+            end case;
+            case OPCODE is
+                when "0000" => RES <= A+B;
+                when "0001" => RES <= A-B;
+                when "0010" => RES <= A+1;
+                when "0011" => RES <= A-1;
+                when "0100" => RES <= 0-A;
+                when "0101" => RES <= comp_out;
+                when "0110" => RES <= A(3 downto 1) & '0'; --6
+                when "0111" => RES <= '0' & A(2 downto 0); -- 7
+                when "1000" => RES <= std_logic_vector(shift_right(unsigned(A),1)); -- 8
+                when "1001" => RES <= not A;
+                when "1010" => RES <= A and B;
+                when "1011" => RES <= A or B;
+                when "1100" => RES <= A xor B;
+                when "1101" => RES <= A xnor B;
+                when "1110" => RES <= A nand B;
+                when "1111" => RES <= A nor B;
+            end case;
+        end if;
     end process;
 end Behavioral;
