@@ -54,6 +54,7 @@ begin
             case comp is
                 when '1' => comp_out <="0001";
                 when '0' => comp_out <="0000";
+                when others => comp_out <= (others =>'0');
             end case;
             case OPCODE is
                 when "0000" => RES <= A+B;
@@ -62,8 +63,8 @@ begin
                 when "0011" => RES <= A-1;
                 when "0100" => RES <= 0-A;
                 when "0101" => RES <= comp_out;
-                when "0110" => RES <= A(3 downto 1) & '0'; --6
-                when "0111" => RES <= '0' & A(2 downto 0); -- 7
+                when "0110" => RES <= A(2 downto 0) & '0'; --6
+                when "0111" => RES <= '0' & A(3 downto 1); -- 7
                 when "1000" => RES <= std_logic_vector(shift_right(unsigned(A),1)); -- 8
                 when "1001" => RES <= not A;
                 when "1010" => RES <= A and B;
@@ -72,6 +73,7 @@ begin
                 when "1101" => RES <= A xnor B;
                 when "1110" => RES <= A nand B;
                 when "1111" => RES <= A nor B;
+                when others => RES <= (others=>'0');
             end case;
         end if;
     end process;
