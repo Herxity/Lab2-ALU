@@ -53,7 +53,9 @@ begin
             clk=>clk,
             A=>A,
             B =>B,
-            OPCODE=>OPCODE);
+            OPCODE=>OPCODE,
+            RES=>led
+            );
             
     loader: process(clk)
     begin
