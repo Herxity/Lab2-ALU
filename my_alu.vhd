@@ -45,10 +45,10 @@ architecture Behavioral of my_alu is
     signal shift_right_arithmetic_A :std_logic_vector(3 downto 0);
 begin
     comp <= '1' when (A > B) else '0';
-
+    shift_right_arithmetic_A <=std_logic_vector(shift_right(unsigned(A),1));
     process(clk)
 
-
+    
     begin
         if rising_edge(clk) then
             case comp is
@@ -57,7 +57,7 @@ begin
                 when others => comp_out <= (others =>'0');
             end case;
             case OPCODE is
-                when "0000" => RES <= A+B;
+                when "0000" => RES <= A + B;
                 when "0001" => RES <= A-B;
                 when "0010" => RES <= A+1;
                 when "0011" => RES <= A-1;
@@ -65,7 +65,7 @@ begin
                 when "0101" => RES <= comp_out;
                 when "0110" => RES <= A(2 downto 0) & '0'; --6
                 when "0111" => RES <= '0' & A(3 downto 1); -- 7
-                when "1000" => RES <= std_logic_vector(shift_right(unsigned(A),1)); -- 8
+                when "1000" => RES <= A(3) & shift_right_arithmetic_A(2 downto 0); -- 8
                 when "1001" => RES <= not A;
                 when "1010" => RES <= A and B;
                 when "1011" => RES <= A or B;

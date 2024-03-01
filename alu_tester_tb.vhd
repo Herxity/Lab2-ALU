@@ -37,7 +37,7 @@ end alu_tester_tb;
 
 architecture Behavioral of alu_tester_tb is
     signal tb_clk : std_logic := '0';
-    signal tb_btn : std_logic_vector(2 downto 0):= (others=>'0');
+    signal tb_btn : std_logic_vector(3 downto 0):= (others=>'0');
     signal tb_sw  : std_logic_vector(3 downto 0) := (others=>'0');
     signal tb_led : std_logic_vector(3 downto 0):= (others=>'0'); 
     component alu_tester is
@@ -74,11 +74,13 @@ begin
     begin
 
         wait for 4 ns;
-        tb_btn <= "001";
+        tb_btn <= "0001";
         wait for 4 ns;
-        tb_btn <= "010";
+        tb_btn <= "0010";
         wait for 4 ns;
-        tb_btn <= "100";
+        tb_btn <= "0100";
+        wait for 4 ns;
+        tb_btn <= "1000";
     end process btn_gen;
     
     alu: alu_tester
