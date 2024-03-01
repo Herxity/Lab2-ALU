@@ -34,7 +34,7 @@ use IEEE.NUMERIC_STD.ALL;
 entity alu_tester is
   Port (clk : in std_logic;
         sw : in std_logic_vector(3 downto 0);
-        btn : in std_logic_vector(2 downto 0);
+        btn : in std_logic_vector(3 downto 0);
         led: out std_logic_vector(3 downto 0));
 end alu_tester;
 
